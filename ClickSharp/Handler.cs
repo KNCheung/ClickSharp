@@ -2,6 +2,7 @@
 using WindowsInput.Native;
 using Gma.System.MouseKeyHook;
 using System.Windows.Forms;
+using System;
 
 namespace ClickSharp
 {
@@ -10,7 +11,7 @@ namespace ClickSharp
         public static readonly Handler instance = new Handler();
         
         private IKeyboardMouseEvents hook;
-        private InputSimulator sim;
+        private InputSimulator simulator;
 
         public string Touch()
         {
@@ -20,7 +21,7 @@ namespace ClickSharp
         private Handler()
         {
             hook = Hook.GlobalEvents();
-            sim = new InputSimulator();
+            simulator = new InputSimulator();
             Subscribe();
         }
 
@@ -29,7 +30,6 @@ namespace ClickSharp
             hook.MouseWheelExt += VolumnControler;
             hook.MouseDownExt += MediaSwitcher;
             hook.MouseWheelExt += SwitchDesktop;
-            hook.KeyPress += GetSpecialKeyStatus;
         }
 
         private void SwitchDesktop(object sender, MouseEventExtArgs e)
@@ -37,11 +37,11 @@ namespace ClickSharp
             if (e.Y > (SystemInformation.PrimaryMonitorSize.Height - 5))
             {
                 if (e.Delta > 0)
-                    sim.Keyboard.ModifiedKeyStroke(
+                    simulator.Keyboard.ModifiedKeyStroke(
                         new[] { VirtualKeyCode.CONTROL, VirtualKeyCode.LWIN },
                         VirtualKeyCode.LEFT);
                 else
-                    sim.Keyboard.ModifiedKeyStroke(
+                    simulator.Keyboard.ModifiedKeyStroke(
                         new[] { VirtualKeyCode.CONTROL, VirtualKeyCode.LWIN },
                         VirtualKeyCode.RIGHT);
                 e.Handled = true;
@@ -54,39 +54,52 @@ namespace ClickSharp
             {
                 if (e.Button == MouseButtons.XButton1)
                 {
-                    sim.Keyboard.KeyPress(VirtualKeyCode.MEDIA_NEXT_TRACK);
+                    simulator.Keyboard.KeyPress(VirtualKeyCode.MEDIA_NEXT_TRACK);
                     e.Handled = true;
                 }
                 else if (e.Button == MouseButtons.XButton2)
                 {
-                    sim.Keyboard.KeyPress(VirtualKeyCode.MEDIA_PREV_TRACK);
+                    simulator.Keyboard.KeyPress(VirtualKeyCode.MEDIA_PREV_TRACK);
                     e.Handled = true;
                 }
                 else if (e.Button == MouseButtons.Middle)
                 {
                     if ((Control.ModifierKeys & Keys.Control) == Keys.Control)
-                        sim.Keyboard.KeyPress(VirtualKeyCode.MEDIA_PLAY_PAUSE);
+                        simulator.Keyboard.KeyPress(VirtualKeyCode.MEDIA_PLAY_PAUSE);
                     else
-                        sim.Keyboard.KeyPress(VirtualKeyCode.VOLUME_MUTE);
+                        simulator.Keyboard.KeyPress(VirtualKeyCode.VOLUME_MUTE);
+                    e.Handled = true;
+                }
+            }
+        }
+
+        private DateTime lastTrackSwitchTime = DateTime.Now.AddSeconds(1);
+        private void VolumnControler(object sender, MouseEventExtArgs e)
+        {
+            if ((e.X <= 2) && (e.Y <= 2))
+            {
+                if ((Control.ModifierKeys & Keys.Control) == Keys.Control)
+                {
+                    if (DateTime.Now > lastTrackSwitchTime)
+                    {
+                        if (e.Delta > 0)
+                            simulator.Keyboard.KeyPress(VirtualKeyCode.MEDIA_PREV_TRACK);
+                        else
+                            simulator.Keyboard.KeyPress(VirtualKeyCode.MEDIA_NEXT_TRACK);
+                        lastTrackSwitchTime = DateTime.Now.AddSeconds(1);  // Prevent press too fast
+                        e.Handled = true;                        
+                    }
+                }
+                else
+                {
+                    if (e.Delta > 0)
+                        simulator.Keyboard.KeyPress(VirtualKeyCode.VOLUME_UP);
+                    else
+                        simulator.Keyboard.KeyPress(VirtualKeyCode.VOLUME_DOWN);
                     e.Handled = true;
                 }
             }
         }
         
-        private void VolumnControler(object sender, MouseEventExtArgs e)
-        {
-            if ((e.X <= 2) && (e.Y <= 2))
-            {
-                if (e.Delta > 0)
-                    sim.Keyboard.KeyPress(VirtualKeyCode.VOLUME_UP);
-                else
-                    sim.Keyboard.KeyPress(VirtualKeyCode.VOLUME_DOWN);
-                e.Handled = true;
-            }
-        }
-
-        private void GetSpecialKeyStatus(object sender, KeyPressEventArgs e)
-        {
-        }
     }
 }
