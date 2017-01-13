@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
 namespace ClickSharp
 {
@@ -25,7 +24,10 @@ namespace ClickSharp
     {
         static void Main(string[] args)
         {
-            TrayIcon.Balloon(1000, "Hello", Handler.instance.Touch(), ToolTipIcon.Info);
+            TrayIcon.Balloon(Handler.Instance.Touch(), 
+                1000,
+                MagicWords.Program_Title, 
+                ToolTipIcon.Info);
             Application.Run();
         }
     }

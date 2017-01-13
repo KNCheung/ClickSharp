@@ -5,52 +5,55 @@ namespace ClickSharp
 {
     static class TrayIcon
     {
-        private static NotifyIcon notifyIcon;
-        private static ContextMenu contextMenu;
-        private static MenuItem menu;
+        private static readonly NotifyIcon NotifyIcon;
+        private static readonly ContextMenu ContextMenu;
+        private static MenuItem _menu;
         static TrayIcon()
         {
+            NotifyIcon = new NotifyIcon();
+            ContextMenu = new ContextMenu();
+
             CreateMenu();
             CreateNotifyIcon();
         }
 
-        static private void Quit(object sender, EventArgs e)
+        private static void Quit(object sender, EventArgs e)
         {
-            notifyIcon.Dispose();
+            NotifyIcon.Dispose();
             Application.Exit();
         }
 
-        static private void CreateMenu()
+        private static void CreateMenu()
         {
-            menu = new MenuItem();
-            menu.Index = 0;
-            menu.Text = "じゃね(&E)";
-            menu.Click += Quit;
+            _menu = new MenuItem
+            {
+                Index = 0,
+                Text = MagicWords.Tray_Menu_Exit
+            };
+            _menu.Click += Quit;
 
-            contextMenu = new ContextMenu();
-            contextMenu.MenuItems.Add(menu);
+            ContextMenu.MenuItems.Add(_menu);
         }
 
         private static void CreateNotifyIcon()
         {
-            notifyIcon = new NotifyIcon();
-            notifyIcon.Icon = Resource.MainIcon;
-            notifyIcon.Text = "Click♯";
-            notifyIcon.ContextMenu = contextMenu;
-            notifyIcon.DoubleClick += Quit;
-            notifyIcon.Visible = true;
+            NotifyIcon.Icon = Resource.MainIcon;
+            NotifyIcon.Text = MagicWords.Tray_Text;
+            NotifyIcon.ContextMenu = ContextMenu;
+            NotifyIcon.DoubleClick += Quit;
+            NotifyIcon.Visible = true;
         }
-        
+
         /// <summary>
         /// 弹出气泡消息
         /// </summary>
+        /// <param name="message">消息</param>
         /// <param name="timeout">停留毫秒数（建议）</param>
         /// <param name="title">标题</param>
-        /// <param name="message">消息</param>
         /// <param name="icon">图标</param>
-        public static void Balloon(int timeout, string title, string message, ToolTipIcon icon)
+        public static void Balloon(string message, int timeout = 1000, string title = "Hello", ToolTipIcon icon = ToolTipIcon.None)
         {
-            notifyIcon.ShowBalloonTip(timeout, title, message, icon);
+            NotifyIcon.ShowBalloonTip(timeout, title, message, icon);
         }
     }
 }
