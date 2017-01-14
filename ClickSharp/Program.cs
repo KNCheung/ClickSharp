@@ -20,14 +20,17 @@ namespace ClickSharp
 //        }
 //    }
 
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            TrayIcon.Balloon(Handler.Instance.Touch(), 
+            TrayIcon.Balloon(MouseHandler.Touch(), 
                 1000,
                 MagicWords.Program_Title, 
                 ToolTipIcon.Info);
+            MouseHandler.SubscribeKey(Handlers.MediaSwitcher);
+            MouseHandler.SubscribeWheel(Handlers.SwitchDesktop);
+            MouseHandler.SubscribeWheel(Handlers.VolumnControler);
             Application.Run();
         }
     }
