@@ -117,11 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Greeting" xml:space="preserve">
+    <value>Hallo~</value>
+  </data>
   <data name="Program_Title" xml:space="preserve">
     <value>Click♯</value>
   </data>
   <data name="Tray_Menu_Exit" xml:space="preserve">
-    <value>じゃね(&amp;E)</value>
+    <value>拜拜呐~(&amp;E)</value>
   </data>
   <data name="Tray_Text" xml:space="preserve">
     <value>Click♯</value>

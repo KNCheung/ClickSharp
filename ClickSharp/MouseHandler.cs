@@ -48,7 +48,7 @@ namespace ClickSharp
 
         public static string Touch()
         {
-            return "あっ!";
+            return MagicWords.Greeting;
         }
 
         private static void DetectLocation(Point point)
