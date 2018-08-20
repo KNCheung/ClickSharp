@@ -26,7 +26,7 @@ namespace ClickSharp
     {
         private static void Main(string[] args)
         {
-            TrayIcon.Balloon($"{MouseHandler.Touch()}\n{MonitorInfo.RealPrimaryMonitorSize.X}x{MonitorInfo.RealPrimaryMonitorSize.Y}", 
+            TrayIcon.Balloon(MouseHandler.Touch(), 
                 1000,
                 MagicWords.Program_Title, 
                 ToolTipIcon.Info);
