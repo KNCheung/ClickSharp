@@ -109,6 +109,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Handlers.cs" />
+    <Compile Include="MonitorInfo.cs" />
     <Compile Include="MouseHandler.cs" />
     <Compile Include="MagicWords.Designer.cs">
       <AutoGen>True</AutoGen>

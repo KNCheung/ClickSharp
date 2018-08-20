@@ -53,10 +53,11 @@ namespace ClickSharp
 
         private static void DetectLocation(Point point)
         {
+            Point realMonitorSize = MonitorInfo.RealPrimaryMonitorSize;
             Left = (point.X <= _zoneWidth);
-            Right = (point.X >= SystemInformation.PrimaryMonitorSize.Width - _zoneWidth);
+            Right = (point.X >= realMonitorSize.X - _zoneWidth);
             Top = (point.Y <= _zoneWidth);
-            Bottom = (point.Y >= SystemInformation.PrimaryMonitorSize.Height - _zoneWidth);
+            Bottom = (point.Y >= realMonitorSize.Y - _zoneWidth);
         }
 
         private static void KeyDown(object sender, MouseEventExtArgs e)
