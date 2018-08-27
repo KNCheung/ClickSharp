@@ -88,6 +88,15 @@ namespace ClickSharp {
         }
         
         /// <summary>
+        ///   查找类似 重启(&amp;R) 的本地化字符串。
+        /// </summary>
+        internal static string Tray_Restart {
+            get {
+                return ResourceManager.GetString("Tray_Restart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Click♯ 的本地化字符串。
         /// </summary>
         internal static string Tray_Text {

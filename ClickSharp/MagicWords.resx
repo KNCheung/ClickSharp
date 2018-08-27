@@ -126,6 +126,9 @@
   <data name="Tray_Menu_Exit" xml:space="preserve">
     <value>拜拜呐~(&amp;E)</value>
   </data>
+  <data name="Tray_Restart" xml:space="preserve">
+    <value>重启(&amp;R)</value>
+  </data>
   <data name="Tray_Text" xml:space="preserve">
     <value>Click♯</value>
   </data>

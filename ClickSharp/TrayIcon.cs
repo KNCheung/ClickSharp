@@ -23,11 +23,27 @@ namespace ClickSharp
             Application.Exit();
         }
 
+        private static void Restart(object sender, EventArgs e)
+        {
+            NotifyIcon.Dispose();
+            Application.Restart();
+        }
+
         private static void CreateMenu()
         {
             _menu = new MenuItem
             {
                 Index = 0,
+                Text = MagicWords.Tray_Restart,
+                DefaultItem = true
+            };
+            _menu.Click += Restart;
+
+            ContextMenu.MenuItems.Add(_menu);
+            
+            _menu = new MenuItem
+            {
+                Index = 1,
                 Text = MagicWords.Tray_Menu_Exit
             };
             _menu.Click += Quit;
