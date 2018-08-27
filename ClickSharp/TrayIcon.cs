@@ -56,7 +56,7 @@ namespace ClickSharp
             NotifyIcon.Icon = Resource.MainIcon;
             NotifyIcon.Text = MagicWords.Tray_Text;
             NotifyIcon.ContextMenu = ContextMenu;
-            NotifyIcon.DoubleClick += Quit;
+            NotifyIcon.DoubleClick += Restart;
             NotifyIcon.Visible = true;
         }
 
